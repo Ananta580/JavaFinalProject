@@ -3,22 +3,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Manages categories including creating, editing, deleting, and viewing categories.
+ */
 public class CategoryManager {
     private final Scanner scanner;
     private final List<Category> categories;
     private static final String CATEGORY_FILE = "categories.txt";
 
-
+    /**
+     * Constructs a CategoryManager object.
+     */
     public CategoryManager() {
         scanner = new Scanner(System.in);
         categories = loadCategories();
     }
 
+    /**
+     * Displays the main menu for category management.
+     */
     public void menu() {
         boolean backToMainMenu = false;
         displayCategoryMenu();
         while (!backToMainMenu) {
-            System.out.print("Enter your choice (1 | 2 | 3 | 4 | 5): ");
+            System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -46,6 +54,9 @@ public class CategoryManager {
         }
     }
 
+    /**
+     * Displays the category management menu.
+     */
     private void displayCategoryMenu() {
         System.out.println("\n");
         System.out.println("*------------------------------------------------------------------------------------------------------------------------------------*");
@@ -55,7 +66,9 @@ public class CategoryManager {
         System.out.println("*------------------------------------------------------------------------------------------------------------------------------------*");
     }
 
-
+    /**
+     * Creates a new category.
+     */
     private void createCategory() {
         System.out.print("Enter category name: ");
         String categoryName = scanner.nextLine();
@@ -65,6 +78,9 @@ public class CategoryManager {
         CONSOLETEXT.printSuccess("Category created successfully.");
     }
 
+    /**
+     * Edits an existing category.
+     */
     private void editCategory() {
         System.out.print("Enter the ID of the category to edit: ");
         int categoryId = scanner.nextInt();
@@ -80,6 +96,9 @@ public class CategoryManager {
         }
     }
 
+    /**
+     * Deletes an existing category.
+     */
     private void deleteCategory() {
         System.out.print("Enter the ID of the category to delete: ");
         int categoryId = scanner.nextInt();
@@ -121,11 +140,13 @@ public class CategoryManager {
         }
     }
 
+    /**
+     * Displays all categories.
+     */
     public void viewCategories() {
-        if(categories.isEmpty()){
+        if (categories.isEmpty()) {
             CONSOLETEXT.printWarning("No Categories to display.");
-        }
-        else{
+        } else {
             System.out.println("*-------------------------------------------------------------*");
             System.out.println("|    Id    |    Name                                          |");
             System.out.println("*-------------------------------------------------------------*");
@@ -134,9 +155,14 @@ public class CategoryManager {
             }
             System.out.println("*-------------------------------------------------------------*");
         }
-
     }
 
+    /**
+     * Retrieves a category by its ID.
+     *
+     * @param id The ID of the category.
+     * @return The category object, or null if not found.
+     */
     private Category getCategoryById(int id) {
         for (Category category : categories) {
             if (category.getId() == id) {
@@ -146,6 +172,9 @@ public class CategoryManager {
         return null;
     }
 
+    /**
+     * Saves categories to a file.
+     */
     private void saveCategories() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(CATEGORY_FILE))) {
             for (Category category : categories) {
@@ -156,6 +185,11 @@ public class CategoryManager {
         }
     }
 
+    /**
+     * Loads categories from a file.
+     *
+     * @return The list of loaded categories.
+     */
     private List<Category> loadCategories() {
         List<Category> categories = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(CATEGORY_FILE))) {
@@ -169,16 +203,30 @@ public class CategoryManager {
                     categories.add(category);
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (FileNotFoundException ignored) {
+        }
+        catch (IOException e) {
             CONSOLETEXT.printError("Error loading categories from file.");
         }
         return categories;
     }
 
+    /**
+     * Gets the list of categories.
+     *
+     * @return The list of categories.
+     */
     List<Category> getCategories() {
         return categories;
     }
 
+    /**
+     * Checks if a category ID is valid.
+     *
+     * @param categoryId The ID of the category.
+     * @return True if the category ID is valid, otherwise false.
+     */
     public boolean isValidCategory(int categoryId) {
         for (Category category : categories) {
             if (category.getId() == categoryId) {
@@ -188,6 +236,12 @@ public class CategoryManager {
         return false;
     }
 
+    /**
+     * Gets the name of a category by its ID.
+     *
+     * @param categoryId The ID of the category.
+     * @return The name of the category, or "Unknown" if not found.
+     */
     public String getCategoryName(int categoryId) {
         for (Category category : categories) {
             if (category.getId() == categoryId) {
@@ -196,5 +250,4 @@ public class CategoryManager {
         }
         return "Unknown";
     }
-
 }

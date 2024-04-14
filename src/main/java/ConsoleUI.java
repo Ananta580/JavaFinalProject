@@ -39,7 +39,7 @@ class ConsoleUI {
                     exit = true;
                     break;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    CONSOLETEXT.printError("Invalid choice. Please try again.");
             }
         }
         System.out.println("Exiting Expense Tracker. See you again. ");
